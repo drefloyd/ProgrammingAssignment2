@@ -10,10 +10,10 @@ def on_message(client, userdata, message):
     if message.payload.decode("utf-8") == password:
         if isLocked == 1:
             isLocked = 0
-            print(f"correct password given, lock is now locked!")
+            print(f"correct password given, lock is now unlocked!")
         else:
             isLocked = 1
-        print(f"correct password given, lock is now unlocked!")
+        print(f"correct password given, lock is now locked!")
     else:
         print(f"incorrect password given!")
 
