@@ -9,10 +9,12 @@ port = 1883
 
 def on_message(client, userdata, message):
     global isLocked, tempPass, tempActivated
-    print("Received message: ", str(message.payload.decode("utf-8")))
+    if str(message.payload.decode("utf-8")) == "Lock broken!":
+        print("The lock has broken!")
 
     # if the entered password is the permanent
-    if message.payload.decode("utf-8") == permPass:
+    elif message.payload.decode("utf-8") == permPass:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         if isLocked == 1:
             isLocked = 0
             tempActivated = False
@@ -24,6 +26,7 @@ def on_message(client, userdata, message):
 
     # if the temporary password has been entered, and it's already been activated
     elif message.payload.decode("utf-8") == tempPass and tempActivated is True:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         if isLocked == 1:
             isLocked = 0
             tempActivated = False
@@ -34,9 +37,11 @@ def on_message(client, userdata, message):
 
     # if the temp password is entered, but it has not been activated yet. Not sure if we should include this or not
     elif message.payload.decode("utf-8") == tempPass and tempActivated is False:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         print("The temporary password has not been activated yet. Enter the permanent password first!")
 
     else:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         print("Incorrect password entry!")
 
 
