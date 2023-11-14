@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 import time
 
 IP_ADDRESS = "10.0.0.74"
+port = 1883
 
 
 def on_message(client, userdata, message):
@@ -58,7 +59,7 @@ client = mqtt.Client("Lock")
 client.on_connect = on_connect  # set for on_connect callback
 client.on_message = on_message  # when a message is received call the function
 
-client.connect(mqttBroker)
+client.connect(mqttBroker, port=port)
 
 client.loop_start()
 
