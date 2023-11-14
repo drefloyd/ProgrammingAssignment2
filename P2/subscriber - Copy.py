@@ -3,7 +3,7 @@
 import paho.mqtt.client as mqtt
 import time
 
-IP_ADDRESS = "10.0.0.74"
+IP_ADDRESS = "127.0.0.1"  # original was "10.0.0.74"
 port = 1883
 
 
