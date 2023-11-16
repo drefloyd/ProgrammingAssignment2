@@ -52,7 +52,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 isLocked = 1  # lock starts as locked
-tempActivated = True  # from the start either the permanent or temporary passwords can be given
+tempActivated = False  # from the start either the permanent or temporary passwords can be given
 
 # neither password will ever change (given the instructions)
 permPass = "123abc"
