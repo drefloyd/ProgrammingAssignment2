@@ -1,10 +1,19 @@
+# publishes messages to the MQTT broker
+
+
 import paho.mqtt.client as mqtt
 
-
-mqttBroker = "mqtt.eclipseprojects.io"  # establishes broker
+IP_ADDRESS = "127.0.0.1"  # original was "10.0.0.74"
+mqttBroker = IP_ADDRESS  # establishes broker
+port = 1883  # port for mosquitto service
 client = mqtt.Client("MQTTLock")  # create client and name
 
-client.connect(mqttBroker)  # connects to broker
+# Last Will and Testament info
+LWT_TOPIC = "LockStatus"
+LWT_MESSAGE = "Lock broken!"
+client.will_set(LWT_TOPIC, LWT_MESSAGE, qos=1, retain=False)
+
+client.connect(mqttBroker, port=port)  # connects to broker
 
 passwordEntered = "N/A"
 

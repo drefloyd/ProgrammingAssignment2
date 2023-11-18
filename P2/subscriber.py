@@ -1,13 +1,20 @@
+# Receives (subscribes to) messages from the broker
+
 import paho.mqtt.client as mqtt
 import time
+
+IP_ADDRESS = "127.0.0.1"  # original was "10.0.0.74"
+port = 1883
 
 
 def on_message(client, userdata, message):
     global isLocked, tempPass, tempActivated
-    print("Received message: ", str(message.payload.decode("utf-8")))
+    if str(message.payload.decode("utf-8")) == "Lock broken!":
+        print("The lock has broken!")
 
     # if the entered password is the permanent
-    if message.payload.decode("utf-8") == permPass:
+    elif message.payload.decode("utf-8") == permPass:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         if isLocked == 1:
             isLocked = 0
             tempActivated = False
@@ -19,6 +26,7 @@ def on_message(client, userdata, message):
 
     # if the temporary password has been entered, and it's already been activated
     elif message.payload.decode("utf-8") == tempPass and tempActivated is True:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         if isLocked == 1:
             isLocked = 0
             tempActivated = False
@@ -27,30 +35,38 @@ def on_message(client, userdata, message):
             isLocked = 1
             print("Correct temporary password given. The lock is now locked!")    # temporary password is still active
 
-    # if the temp password is entered, but it has not been activated yet. Not sure if we should include this or not
+    # if the temp password is entered, but it has not been activated yet.
     elif message.payload.decode("utf-8") == tempPass and tempActivated is False:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         print("The temporary password has not been activated yet. Enter the permanent password first!")
 
     else:
+        print("Received Message ", str(message.payload.decode("utf-8")))
         print("Incorrect password entry!")
 
 
-isLocked = 1  # lock starts as locked
-tempActivated = True  # from the start either the permanent or temporary passwords can be given
+def on_connect(client, userdata, flags, rc):
+    print("Connect: " + str(rc))
+    client.subscribe("MQTTLock")
+    client.subscribe("LockStatus")
 
-# neither password will ever change (given the instructions)
+
+isLocked = 1  # lock starts as locked
+tempActivated = False  # from the start only the permanent password can be used
+
+# neither password will ever change
 permPass = "123abc"
 tempPass = "temp"
 
-mqttBroker = "mqtt.eclipseprojects.io"
+mqttBroker = IP_ADDRESS
 client = mqtt.Client("Lock")
 
+client.on_connect = on_connect  # set for on_connect callback
 client.on_message = on_message  # when a message is received call the function
 
-client.connect(mqttBroker)
+client.connect(mqttBroker, port=port)
 
 client.loop_start()
-client.subscribe("MQTTLock")
 
 time.sleep(50)  # time to wait before stopping the loop
 client.loop_stop()
