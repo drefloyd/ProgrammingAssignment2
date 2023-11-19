@@ -3,7 +3,7 @@
 import paho.mqtt.client as mqtt
 import time
 
-IP_ADDRESS = "127.0.0.1"  # original was "10.0.0.74"
+IP_ADDRESS = "10.0.0.74"  # original was "10.0.0.74"
 port = 1883
 
 
@@ -68,6 +68,6 @@ client.connect(mqttBroker, port=port)
 
 client.loop_start()
 
-time.sleep(50)  # time to wait before stopping the loop
+time.sleep(500)  # time to wait before stopping the loop
 client.loop_stop()
 client.disconnect()
