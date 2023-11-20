@@ -3,7 +3,7 @@
 
 import paho.mqtt.client as mqtt
 
-IP_ADDRESS = "127.0.0.1"  # original was "10.0.0.74"
+IP_ADDRESS = "10.0.0.74"  # original was "10.0.0.74"
 mqttBroker = IP_ADDRESS  # establishes broker
 port = 1883  # port for mosquitto service
 client = mqtt.Client("MQTTLock")  # create client and name

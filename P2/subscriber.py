@@ -46,7 +46,7 @@ def on_message(client, userdata, message):
 
 
 def on_connect(client, userdata, flags, rc):
-    print("Connect: " + str(rc))
+    print("Connect: " + str(rc))  # rc, result code should be 0 on successful connection
     client.subscribe("MQTTLock")
     client.subscribe("LockStatus")
 
